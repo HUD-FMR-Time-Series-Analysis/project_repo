@@ -18,11 +18,10 @@ ________________________________________________________________________________
 
 **Deliverables**
 
-- A complete readme.md which walks through the details of this project
-- A final report folder which concisely displays the finished version of the project including exploration, findings, modeling, and     all .py files needed to reproduce this project.
+- A complete README.md which walks through the details of this project
+- A final report folder which concisely displays the finished version of the project including exploration, findings, modeling, and all .py files needed to reproduce this project.
 - Individual folders containing workbooks showing the unpolished groundwork and insights that lead to the final notebook
 - Link to stakeholder presentation at [canva.com](link goes here)
-
 
 _____________________________________________________________________
 
@@ -44,6 +43,14 @@ ________________________________________________________________________________
 
 #### Acquire Actions
 Steps Taken:
+1. HUD Data
+    a. 
+2. Market Rent Data
+    a. 
+3. Realty Mole Data
+    a. Accessed Realty Mole data using rapid api
+    b. Saved data as a csv file
+
 
 Link to functions in acquire.py file:
 
@@ -51,7 +58,18 @@ Link to functions in acquire.py file:
 _____________________________________________________________________________________
 #### Prepare Actions:
 Steps Taken:
-
+1. HUD Data
+    a. 
+2. Market Rent Data
+    a. 
+3. Realty Mole Data
+    a. Converted string to dictionary
+    b. Added zipcode and date to dictionaries
+    c. Converted dictionary to a dataframe
+    d. Set date as the index
+    
+    
+    
 Link to functions in acquire.py file:
 
 ## 4. Exploratory Data Analysis (EDA)
@@ -68,7 +86,7 @@ c.
 
 ### Modeling
 _____________________________________________________________________________________
-A parapgraph explaining our approach to modeling. Types of modeling we used, how we split the load, what we found. 
+A paragraph explaining our approach to modeling. Types of modeling we used, how we split the load, what we found. 
 
 ### Results: 
 _____________________________________________________________________________________
