@@ -38,7 +38,7 @@ def wrangle_data():
     merged['diff'] =  merged['AMR'] - merged['fmr']
     
     # creating the percent difference in terms of fmr
-    merged['percent_diff'] =  (merged['AMR'] - merged['fmr']) / merged['fmr']
+    merged['percent_diff'] =  ((merged['AMR'] - merged['fmr']) / merged['fmr']) * 100
     
     # changing name for accureacy (its the median not the average)
     merged = merged.rename({'AMR': 'mmr'}, axis=1)
