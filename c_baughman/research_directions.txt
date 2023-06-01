@@ -1,0 +1,18 @@
+# research directions:
+
+Corey
+1. cpi data v rent component
+2. how FMR is calculated
+3. qualifications for voucher
+4. correlate the median market rate to the 40th percetile MR
+5. check out Orsinger datsets
+
+Aaron
+* I think it will be very useful to examine the zip code related data. With the zip code related data, we can possibly created a time series map that shows when people can afford certain zip codes and when people can't afford certain zip codes
+* It would be nice to have the zip codes labeled in 3 ways 'Good', 'Fair', 'Poor' based on information in each zip code. This information will be based on things such as poverty, violence, school ratings, etc.
+* We also have the total amount of rentals in each zipcode with their price range, we may be able to also determine the percentages/likelihood of individuals being able to move to a certain area based on the availability of units
+* One consideration is whether or not an area accepts the HUD vouchers, there may be places that do. not accept HUD vouchers, which could limit ones ability to even move to a certain zipcode if the voucher is not accepted
+    * It may be useful to see if we can find a comprehensive list of places that accept the hud voucher and identify where an individual can move based on the hud accepting areas
+* What are the economic qualificaitons for individuals to get on the vouchers?
+    * Understanding this will allow us to better understand if people can afford a 150 difference or higher
+    
