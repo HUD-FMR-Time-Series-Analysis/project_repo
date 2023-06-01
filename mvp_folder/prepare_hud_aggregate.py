@@ -6,7 +6,7 @@ import pandas as pd
 # this is the entity_id for San Antonio - New Braunfels MSA
 entity_id = 'METRO41700M41700'
 
-def get_hud_macro_data(entity_id):
+def get_hud_macro_data(entity_id = entity_id):
     '''
     This function takes in a HUD entity_id and searches the FMR historical data .csv
     for the FMR rates for that entity between 2017 and 2023. Then only the FMR rates
