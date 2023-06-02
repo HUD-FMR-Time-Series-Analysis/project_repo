@@ -1,6 +1,8 @@
 import pandas as pd
 from prepare_hud_aggregate import get_hud_macro_data
 from wrangle_HUDpro_amr_data import get_sanant_amr_data
+import warnings
+warnings.filterwarnings('ignore')
 
 
 # Creating a function for it 
@@ -30,6 +32,9 @@ def wrangle_data():
     
     # dropping the null values that are not necessary
     merged.dropna(inplace=True)
+    
+    # normalize the index
+    merged.index = merged.index.normalize()
     
     # changed amr to float
     merged['AMR'] = merged['AMR'].astype(float)
