@@ -66,7 +66,11 @@ Steps Taken:
     a. National level FMR historical data was retrieved from https://www.huduser.gov/portal/datasets/FMR/FMR_All_1983_2023_rev.csv
     b. The data for two-bedroom FMR for the San Antonio - New Braunfels (entity_id = 'METRO41700M41700') Metropolitan Statistical Area is then extracted using the prepare_hud_aggregate.py script in this repo.
 2. Market Rent Data
-    a. 
+    The Market Rent data was acquired from Bigger Pockets, a media company and social network focused on commercial and residential real estate investing. This particular dataset was created by Kaylin Cooper, an investor who has been tracking market trends in the top 100 cities in the U.S. since 2017.
+- Size at Acquisition: 300 rows x 77 columns 
+- Source: https://www.biggerpockets.com/files/user/leahd42/file/webinar-bonus-2022-rental-data
+
+
 3. Realty Mole Data
     a. Accessed Realty Mole data using rapid api
     b. Saved data as a csv file
@@ -87,7 +91,11 @@ Steps Taken:
     a. time shift the monthly rates to line up with the federal fiscal year.
     a. there were no null values in the HUD data.
 2. Market Rent Data
-    a. 
+    a. For the sake of reaching MVP, we will only be looking at two bedroom units in San Antonio. We merged this median market rent (MMR) data with HUD's Fair Market Rent (FMR) data into one dataframe. The step by step comments for preparation can be found in the wrangleHUDpro_amr_data.py file. Here are the steps that we took to make sure the dataframes matched for joining:
+- Set the dates as the index for the dataframe
+- Isolate the market rent for the San Antonio market only
+- Keep only the values for 2 bedroom units
+
 3. Realty Mole Data
     a. Converted string to dictionary
     b. Added zipcode and date to dictionaries
