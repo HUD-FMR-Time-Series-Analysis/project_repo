@@ -23,6 +23,22 @@ ________________________________________________________________________________
 - Individual folders containing workbooks showing the unpolished groundwork and insights that lead to the final notebook
 - Link to stakeholder presentation at [canva.com](link goes here)
 
+#### Data Dictionary 
+
+| Columns | Description |
+| :---------| :------------------------ |
+| diff | The difference between MMR and FMR. This is calculated as MMR - FMR |
+| fmr | The HUD established Fair Market Rate for the entity. We chose to use the rate for two-bedroom properties. |
+| mmr | The Median Market Rent. This is the median rent price of two-bedroom rental properties in the San Antonio/New Braunfels area as aggregated from 3rd party data (see the Acquire section for retrieval methodology) We cannot confirm that the boundaries of this area exactly match the boundaries of the federally defined MSA, but it should be close and any mismatch should remain consistent over time. |
+| percent_diff | The percentage difference between MMR and FMR expressed in terms of FMR. This is calculated as (MMR - FMR) / FMR. |
+
+#### Glossary
+
+| Word | Definition |
+| :---------| :------------------------ |
+| Entity ID | An entity id is a code the federal government uses to uniquely identify Metropolitan Statistical Areas. In the case of the San Antonio - New Braunfel MSA, the entity id is 'METRO41700M41700'
+| MSA | Metropolitan Statistical Area. This is a federally defined area that is used by the government to aggregate statistics for metropolitan areas. Each MSA is identified by an entity id code.
+
 _____________________________________________________________________
 
 #### Outline:
@@ -36,6 +52,9 @@ _____________________________________________________________________
 _____________________________________________________________________________________
 
 ## 1. Initial Questions
+1. Does the HUD FMR rate accurately track 3rd Party market rental data over time?
+2. Are there noticeable seasonal trends in the 3rd party data?
+3. Are there seasonal trends in the difference between the FMR rates and 3rd party data?
 ____________________________________________________________________________________
 
 ## 2. Acquire
@@ -44,7 +63,8 @@ ________________________________________________________________________________
 #### Acquire Actions
 Steps Taken:
 1. HUD Data
-    a. 
+    a. National level FMR historical data was retrieved from https://www.huduser.gov/portal/datasets/FMR/FMR_All_1983_2023_rev.csv
+    b. The data for two-bedroom FMR for the San Antonio - New Braunfels (entity_id = 'METRO41700M41700') Metropolitan Statistical Area is then extracted using the prepare_hud_aggregate.py script in this repo.
 2. Market Rent Data
     a. 
 3. Realty Mole Data
@@ -59,7 +79,13 @@ ________________________________________________________________________________
 #### Prepare Actions:
 Steps Taken:
 1. HUD Data
-    a. 
+    a. filter rows to only those in our entity_id
+    a. chose columns for two bedroom FMRs in years 2017-2023
+    a. reassign column names as years and transpose to make years rows
+    a. group counties sharing the same entity_id into a single value for the entity
+    a. resample the annual rates to monthly rates to align with 3rd party data frequency.
+    a. time shift the monthly rates to line up with the federal fiscal year.
+    a. there were no null values in the HUD data.
 2. Market Rent Data
     a. 
 3. Realty Mole Data
@@ -74,12 +100,12 @@ Link to functions in acquire.py file:
 
 ## 4. Exploratory Data Analysis (EDA)
 
-Short paragraph about how we approached exploration for this data.
+We performed Time Series Analysis on the data using Jupyter Notebooks with python, pandas, matplotlib, seaborn, and statmodels.api. Further analysis was done in Tableau Public. After some initial analysis, we decided not to split the data for exploration as there appeared to be some trend reversal in the newest data and we felt that visual analysis would be impaired by looking at a truncated training dataset. 
 
 Here's what we found:
 
-a. 
-b. 
+a. There has been a general widening of the gap between the FMR and 3rd Party Rents during the period from 2017-2023 for the San Antonio - New Braunfels MSA.
+b. There appear to be seasonal disparities between the two rates: When the federal rate is updated in October, the gap between rates tends to close, but by summer and early fall, the gap tended to widen.
 c. 
 
 
