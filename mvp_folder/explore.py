@@ -122,7 +122,7 @@ def get_avg_diff_6m():
     y.resample('6M').mean().plot.bar(width=.9, ec='black')
     
     # establish titles and axis lables
-    plt.title('Average Difference by 6 Month Period')
+    plt.title('Average Semi-Annual Difference')
     plt.xlabel('6-Month-Interval')
     plt.ylabel('Difference in Price')
     
