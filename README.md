@@ -1,4 +1,4 @@
-# Clear Title (TBD)
+# The Fairness of Fair Market Rent
 ## Time Series Analysis of HUD's Fair Market Rent (FMR) Rates
 Corey Baughman, Mack McGlenn, Aaron Moore, Adriana Nuncio
 
@@ -8,8 +8,7 @@ ________________________________________________________________________________
 
 ### Project Overview
 
-Every year, the Department of Housing and Urban Development releases a list of Fair Market Rents for over 2,600 markets across the United States.
-The HUD Fair Market Rent is calculated by taking into account features such as the size of the rental unit, the number of bedrooms, and the location of the property. FMR is used as the baseline for various government programs that provide housing assistance to low-income families, such as the Housing Choice Voucher Program and the Project-Based Voucher Program. As such, the accuracy of these values can't be overstated for the sake of the millions of Americans who depend on these programs. Our project's goal is to analyze the margin of error between HUD's FMR and 3rd party data for market averages to determine the reliability of FMR data in an actual market. If FMRs are too high, public housing agencies (PHAs) will be unable to maximize the number of families who receive assistance. If they're too low, it becomes more difficult for voucher users to acquire adequate housing.
+Every year, the Department of Housing and Urban Development releases a list of Fair Market Rents (FMRs) for over 2,600 markets across the United States. The FMR is produced for each combination of property location and number of bedrooms from 0-4. FMR is used as the baseline for various government programs that provide housing assistance to low-income families, such as the Housing Choice Voucher Program (2.7 million units)and the Project-Based Voucher Program (0.3 million units). As such, the accuracy of these values can't be overstated for the sake of the millions of Americans who depend on these programs. Our project's goal is to analyze the difference between HUD's FMR and 3rd party data for market averages to determine the reliability of FMR data in an actual market. If FMRs are too high, public housing agencies (PHAs) will be unable to maximize the number of families who receive assistance. If they're too low, it becomes more difficult for voucher users to acquire adequate housing.
 _____________________________________________________________________________________
 ###  How to Read Our Work
 
@@ -105,7 +104,7 @@ Steps Taken:
     
     
     
-Link to functions in acquire.py file:
+https://github.com/HUD-FMR-Time-Series-Analysis/project_repo/blob/main/mvp_folder/wrangle.py
 
 ## 4. Exploratory Data Analysis (EDA)
 
@@ -115,26 +114,49 @@ Here's what we found:
 
 a. There has been a general widening of the gap between the FMR and 3rd Party Rents during the period from 2017-2023 for the San Antonio - New Braunfels MSA.
 b. There appear to be seasonal disparities between the two rates: When the federal rate is updated in October, the gap between rates tends to close, but by summer and early fall, the gap tended to widen.
-c. 
 
 
 
 ### Modeling
 _____________________________________________________________________________________
-A paragraph explaining our approach to modeling. Types of modeling we used, how we split the load, what we found. 
+##### Features:
+* Modeling will be done on all features in the dataset, with a focus on trying to predict the difference between MMR and FMR.
 
-### Results: 
+##### Model Evaluation Metric:
+* Root Mean Squared Error will be used as the evaluation metric for its applicability to continuous variables.
+
+##### Target:
+* While the difference is the target, we will also be modeling and predicting MMR and FMR due to the difference being reliant on both.
+* We will also be modeling and predicting MMR and FMR due to the difference being reliant on both.
+
+##### Baseline Models:
+* Three baseline models were used, with 1 month rolling average performing the best. The model below is the metrics below are the metrics to beat for the models.
+
+### Results:
+* Only two models provided useful predictions, Holts Linear Trend with optimization and Holts Seasonal Trend (ExponentialSmoothing) with a seasonal period of 12 months, additive seasonality, additive overall trend, and damped hyperparameters set.
+* When comparing to baseline predicitons, both models outperform the baseline, with Holt' Seasonal Trend performing the best. We will continuw on with Holt's Seasonal Trend into testing.
 _____________________________________________________________________________________
 
 
 ### Conclusion & Reccomendations
 _____________________________________________________________________________________
-Here's what we learned from this project:
+### Summary
+* There has been a steady increase in the difference between MMR and FMR, with occasioanal decreases in the difference occurring in October, when the FMR voucher amount is adjusted. 
+* The best time to use a voucher is between October and March. 
+* Modeling was successful when using the baseline RMSE as a benchmark, but we do not believe it has a low enough RMSE to be useful for consumers.
+
+### Recommendations
+* There is an adjustment period of 1 year that the FMR takes to account for changes in the market. We recommend doing semi-annual adjustments, with October being the official adjustment and March holding a preliminary adjustment. This recommendation is based on the average shift in difference between March and October.
+
+### Next Steps
+* Acquire MMR data from before 2017
+* Acquire and explore more locations
+* Take a granular look into zip code level data instead of MSA
+
 
 ### Steps to Reproduce
 _____________________________________________________________________________________
 
    1. Clone this repo.
-   2. 
-   3. 
-   4. 
+   2. The final_report_mvp.ipynb in the mvp_folder.
+   3. The data files are the .csv files included in the repo.
