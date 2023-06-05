@@ -24,6 +24,7 @@ def get_disparity_graph():
     # plot the mmr and fmr lines
     df.mmr.plot(label='Median Market Rent')
     df.fmr.plot(label='Fair Market Rent (40%)')
+    plt.fill_between(df.index, df.mmr, df.fmr, color='red', alpha=0.1)
     
     # get a border on the legend
     plt.legend(frameon=True)
@@ -114,12 +115,16 @@ def get_avg_diff_6m():
     '''
     
     # resample to 6 month with the mean and create a bar plot
-    y.resample('6M').mean().plot.bar(width=.9, ec='black')
+    y_resample = y.resample('6M').mean()
+    y_resample.index = y_resample.index.strftime(date_format='%Y-%m')
     
+    y_resample.plot.bar(width=.9, ec='black')
+   
     # establish titles and axis lables
     plt.title('Average Semi-Annual Difference')
     plt.xlabel('6-Month-Interval')
     plt.ylabel('Difference in Price')
+    plt.xticks(rotation = 55)
     
     # only get the grid lines to folloow the x axis
     plt.grid(axis='x')
