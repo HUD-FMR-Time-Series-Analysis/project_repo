@@ -6,6 +6,7 @@ Corey
 3. qualifications for voucher
 4. correlate the median market rate to the 40th percetile MR
 5. check out Orsinger datsets
+6. voucher includes utilities??
 
 Aaron
 * I think it will be very useful to examine the zip code related data. With the zip code related data, we can possibly created a time series map that shows when people can afford certain zip codes and when people can't afford certain zip codes
