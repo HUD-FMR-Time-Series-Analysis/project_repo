@@ -36,6 +36,7 @@ ________________________________________________________________________________
 
 | Word | Definition |
 | :---------| :------------------------ |
+| CBSA | Core Based Statistical Area (CBSA) is an Office of Management and Budget(OMB) defined area containing a large population nucleus, or urban area, and adjacent communities that have a high degree of integration with that nucleus. There are two types of CBSAs: Metropolitan statistical areas (MSAs) and micropolitan statistical areas (µSAs). 
 | Entity ID | An entity id is a code the federal government uses to uniquely identify Metropolitan Statistical Areas. In the case of the San Antonio - New Braunfel MSA, the entity id is 'METRO41700M41700'
 | MSA | Metropolitan Statistical Area. This is a federally defined area that is used by the government to aggregate statistics for metropolitan areas. Each MSA is identified by an entity id code.
 
