@@ -19,7 +19,7 @@ from statsmodels.tsa.api import Holt, ExponentialSmoothing
 from wrangle import wrangle_data
 
 # get data
-df, train, test = wrangle_data()
+df, train, validate, test1 = wrangle_data()
 
 
 ### HELPER FUNCTIONS ###
@@ -42,7 +42,7 @@ def evaluate(yhat_df, target_var):
     it will return the rmse. 
     '''
     # gets the rmse and rounds to 0 decimals places
-    rmse = round(sqrt(mean_squared_error(test[target_var], yhat_df[target_var])), 0)
+    rmse = round(sqrt(mean_squared_error(validate[target_var], yhat_df[target_var])), 0)
     
     # returns the rmse 
     return rmse
@@ -76,7 +76,7 @@ def get_baseline_simple_average():
     It stores the information for each variable in a df that uses the test.index and returns that df
     '''
     # initialize df
-    d = pd.DataFrame(index=test.index)
+    d = pd.DataFrame(index=validate.index)
     
     # for each column
     for col in train.columns:
@@ -96,7 +96,7 @@ def get_baseline_rolling_average(period = 1):
     It then returns the rolling average for each column in train in a dartaframe
     '''
     # create dict
-    d = pd.DataFrame(index=test.index)
+    d = pd.DataFrame(index=validate.index)
     
     # for each col in train
     for col in train.columns:
@@ -144,7 +144,7 @@ def get_holt_seasonal_trend_forecast(seasonal_periods=12, trend='add', seasonal=
     This function takes in hyperparameteers for the holts seasonal trend model and outputs a df with each forecast for each column in the train df
     '''
     # initialize dictionary
-    d = pd.DataFrame(index = test.index)
+    d = pd.DataFrame(index = validate.index)
 
     # for each column in train
     for col in train.columns:
@@ -153,7 +153,7 @@ def get_holt_seasonal_trend_forecast(seasonal_periods=12, trend='add', seasonal=
         hst_fit = ExponentialSmoothing(train[col], seasonal_periods=seasonal_periods, trend=trend, seasonal=seasonal, damped=damped).fit(optimized=True)
 
         # get forecast for the length or shape
-        hst_forecast = hst_fit.forecast(test.shape[0] + 1)
+        hst_forecast = hst_fit.forecast(validate.shape[0] + 1)
 
         # add the forecasted information to the dictionary with only the test index
         d[col] = hst_forecast
@@ -167,7 +167,7 @@ def get_holts_optimized():
     This functions models and predicts each column in the global train variable and places the predicted values in a df
     '''
     # intialize df
-    d = pd.DataFrame(index=test.index)
+    d = pd.DataFrame(index=validate.index)
 
     # for each column in train
     for col in train.columns:
@@ -179,8 +179,8 @@ def get_holts_optimized():
         model = model.fit(optimized=True)
 
         # get the predicted values, using the first date in the test index and th last date in the index as start and end positions
-        values = model.predict(start = test.index[0],
-                                  end = test.index[-1])
+        values = model.predict(start = validate.index[0],
+                                  end = validate.index[-1])
 
         # add the values to the dataframe
         d[col] = round(values, 2)
