@@ -13,11 +13,13 @@ from datetime import datetime
 from sklearn.metrics import mean_squared_error
 from math import sqrt 
 
-
+#models
+from statsmodels.tsa.api import Holt, ExponentialSmoothing
+# data
 from wrangle import wrangle_data
 
 # get data
-df, train, test = wrangle_data()
+df, train, validate, test = wrangle_data()
 
 
 ### HELPER FUNCTIONS ###
@@ -40,7 +42,7 @@ def evaluate(yhat_df, target_var):
     it will return the rmse. 
     '''
     # gets the rmse and rounds to 0 decimals places
-    rmse = round(sqrt(mean_squared_error(test[target_var], yhat_df[target_var])), 0)
+    rmse = round(sqrt(mean_squared_error(validate[target_var], yhat_df[target_var])), 0)
     
     # returns the rmse 
     return rmse
@@ -74,7 +76,7 @@ def get_baseline_simple_average():
     It stores the information for each variable in a df that uses the test.index and returns that df
     '''
     # initialize df
-    d = pd.DataFrame(index=test.index)
+    d = pd.DataFrame(index=validate.index)
     
     # for each column
     for col in train.columns:
@@ -94,7 +96,7 @@ def get_baseline_rolling_average(period = 1):
     It then returns the rolling average for each column in train in a dartaframe
     '''
     # create dict
-    d = pd.DataFrame(index=test.index)
+    d = pd.DataFrame(index=validate.index)
     
     # for each col in train
     for col in train.columns:
@@ -142,7 +144,7 @@ def get_holt_seasonal_trend_forecast(seasonal_periods=12, trend='add', seasonal=
     This function takes in hyperparameteers for the holts seasonal trend model and outputs a df with each forecast for each column in the train df
     '''
     # initialize dictionary
-    d = pd.DataFrame(index = test.index)
+    d = pd.DataFrame(index = validate.index)
 
     # for each column in train
     for col in train.columns:
@@ -151,7 +153,7 @@ def get_holt_seasonal_trend_forecast(seasonal_periods=12, trend='add', seasonal=
         hst_fit = ExponentialSmoothing(train[col], seasonal_periods=seasonal_periods, trend=trend, seasonal=seasonal, damped=damped).fit(optimized=True)
 
         # get forecast for the length or shape
-        hst_forecast = hst_fit1.forecast(test.shape[0] + 1)
+        hst_forecast = hst_fit.forecast(validate.shape[0] + 1)
 
         # add the forecasted information to the dictionary with only the test index
         d[col] = hst_forecast
@@ -165,7 +167,7 @@ def get_holts_optimized():
     This functions models and predicts each column in the global train variable and places the predicted values in a df
     '''
     # intialize df
-    d = pd.DataFrame(index=test.index)
+    d = pd.DataFrame(index=validate.index)
 
     # for each column in train
     for col in train.columns:
@@ -177,8 +179,8 @@ def get_holts_optimized():
         model = model.fit(optimized=True)
 
         # get the predicted values, using the first date in the test index and th last date in the index as start and end positions
-        values = model.predict(start = test.index[0],
-                                  end = test.index[-1])
+        values = model.predict(start = validate.index[0],
+                                  end = validate.index[-1])
 
         # add the values to the dataframe
         d[col] = round(values, 2)
@@ -221,3 +223,114 @@ def get_all_models():
     # return the functions with both baseline and non-baseline models in one table
     return pd.concat([get_baseline_table(), get_models()]).reset_index().drop('index', axis=1)
 
+
+
+#### MODELS ON TEST ###
+# make programmatic
+def get_holt_seasonal_trend_forecast_test(seasonal_periods=12, trend='add', seasonal='add', damped=True):
+    '''
+    This function takes in hyperparameteers for the holts seasonal trend model and outputs a df with each forecast for each column in the train df
+    '''
+    # initialize dictionary
+    d = pd.DataFrame(index = (pd.concat([validate, test]).index))
+
+    # for each column in train
+    for col in train.columns:
+
+        # fit on the columns with 12 month seasonality and additive trend and seasonals, with a damped
+        hst_fit = ExponentialSmoothing(train[col], seasonal_periods=seasonal_periods, trend=trend, seasonal=seasonal, damped=damped).fit(optimized=True)
+
+        # get forecast for the length or shape
+        hst_forecast = hst_fit.forecast(validate.shape[0] + test.shape[0] + 1)
+
+        # add the forecasted information to the dictionary with only the test index
+        d[col] = round(hst_forecast, 2)
+
+    # exit function and return the df
+    return d
+
+
+def get_baseline_rolling_average_test(period = 1):
+    '''
+    This function takes in a period as an argument and calculates the rolling/moving average based on that period.
+    It then returns the rolling average for each column in train in a dartaframe
+    '''
+    # create dict
+    d = pd.DataFrame(index=pd.concat([validate, test]).index)
+    
+    # for each col in train
+    for col in train.columns:
+
+        # get the rolling mean
+        rolling = round(train[col].rolling(period).mean()[-1], 2)
+        
+        # add column with rolling mean in it
+        d[col] = rolling
+
+    # return the df
+    return d
+
+# evaluation function to compute rmse
+def evaluate_test(yhat_df, target_var):
+    '''
+    This function will take the actual values of the target_var from test, 
+    and the predicted values stored in yhat_df, 
+    and compute the rmse, rounding to 0 decimal places. 
+    it will return the rmse. 
+    '''
+    
+    # gets the rmse and rounds to 0 decimals places
+    rmse = round(sqrt(mean_squared_error(test[target_var], yhat_df[target_var])), 0)
+    
+    # returns the rmse 
+    return rmse
+
+# function to store rmse for comparison purposes
+def append_eval_df_test(yhat_df, model_type, target_var):
+    '''
+    this function takes in the yhat_df used, type of model run, and the name of the target variable. 
+    It returns the eval_df with the rmse appended to it for that model and target_var. 
+    '''
+    # setting start time for yhat_df
+    yhat_start = test.index[0]
+    
+    # getting test size df
+    yhat_df = yhat_df[yhat_start:]
+    
+    # get the rmse
+    rmse = evaluate_test(yhat_df, target_var)
+    
+    # create a dictionary to store relevant information
+    d = {'model_type': [model_type], 'target_var': [target_var], 'rmse': [rmse]}
+    
+    # convert to df
+    d = pd.DataFrame(d)
+    
+    # return the df
+    return d
+
+def get_test():
+    '''
+    This function creates a datafram with the baseline model rmse's for each feature in the tain df
+    '''
+    # get eval_df
+    eval_df = get_eval_df()
+    
+    # Create list of baseline tables with the model name as a pairt
+    models_and_type = [(get_baseline_rolling_average_test(), '1_month_rolling_average'), (get_holt_seasonal_trend_forecast_test(), 'holts_seasonal')]
+
+    # for each df and modeltype
+    for model, model_type in models_and_type:
+        
+        # for each columns in df
+        for col in train.columns:
+
+            # add to the eval_df
+            new_eval_df = append_eval_df_test(model, model_type=model_type,
+                                    target_var=col)
+            
+            # concat new eval with old eval
+            eval_df = pd.concat([eval_df, new_eval_df])
+    
+    # exit and return eval df with all evaluations
+    return eval_df.reset_index().drop('index', axis=1)
