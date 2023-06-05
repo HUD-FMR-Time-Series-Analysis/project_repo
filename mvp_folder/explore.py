@@ -11,7 +11,7 @@ plt.style.use('seaborn-whitegrid')
 plt.rc('font', size=16)
 
 # getting data
-df, train, test = wrangle_data()
+df, train, validate, test = wrangle_data()
 
 # assigning target
 y = df['diff']
@@ -112,11 +112,6 @@ def get_avg_diff_6m():
     '''
     This function calls a bar chart representing the average difference per 6 month interval from 2017 to now
     '''
-    # get data
-    df, train, test = wrangle_data()
-    
-    # get target
-    y = df['diff']
     
     # resample to 6 month with the mean and create a bar plot
     y.resample('6M').mean().plot.bar(width=.9, ec='black')

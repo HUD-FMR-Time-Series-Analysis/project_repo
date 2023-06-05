@@ -48,11 +48,10 @@ def wrangle_data():
     # changing name for accureacy (its the median not the average)
     merged = merged.rename({'AMR': 'mmr'}, axis=1)
     
-    # creating the train
-    train = merged[merged.index <= '2022-02-01']
-    
-    # creating the test 
-    test =  merged[merged.index > '2022-02-01']
+    # splitting 12 month(test), 24month(validate), 39 month(train)
+    test = merged[-12:]
+    validate = merged[-36:-12]
+    train = merged[:-36]
     
     # return the merged df, train df, and test df
-    return merged, train, test
+    return merged, train, validate, test
