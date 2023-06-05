@@ -31,11 +31,17 @@ def wrangle_data():
     # dropping the null values that are not necessary
     merged.dropna(inplace=True)
     
+    # normalize the index
+    merged.index = merged.index.normalize()
+    
     # changed amr to float
     merged['AMR'] = merged['AMR'].astype(float)
     
     # creating the difference 
     merged['diff'] =  merged['AMR'] - merged['fmr']
+    
+    # creating the percent difference in terms of fmr
+    merged['percent_diff'] =  ((merged['AMR'] - merged['fmr']) / merged['fmr']) * 100
     
     # changing name for accureacy (its the median not the average)
     merged = merged.rename({'AMR': 'mmr'}, axis=1)
