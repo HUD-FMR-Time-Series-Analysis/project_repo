@@ -93,7 +93,7 @@ def wrangle_micro_data(filename):
     
     # add column 'percent_diff' for percent difference in AMR and FMR
     # in terms of AMR
-    df['percent_diff'] = (df.average_rent - df.two_bed_fmr) / df.two_bed_fmr
+    df['percent_diff'] = ((df.average_rent - df.two_bed_fmr) / df.two_bed_fmr) * 100
     
     return df
     
