@@ -2,7 +2,7 @@
 ## Time Series Analysis of HUD's Fair Market Rent (FMR) Rates
 Corey Baughman, Mack McGlenn, Aaron Moore, Adriana Nuncio
 
-Codeup: O'Neil Cohort 
+Codeup: O'Neil Cohort  
 June 2023
 _____________________________________________________________________________________
 
