@@ -135,12 +135,12 @@ def get_avg_diff_6m():
     
     return
 
-def get_affordability_map():
+def get_affordability_map(date):
     '''
     This function merges the zip code tabulation area GeoDataFrame with the affordability data frame
     '''
     # get wrangled df
-    gdf = wrangle_gdf()
+    gdf = wrangle_gdf(date)
     
     # exit and return a map with the afforability as the focus
     return gdf.explore('affordability', cmap='RdYlGn')

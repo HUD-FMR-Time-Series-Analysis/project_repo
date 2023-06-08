@@ -128,7 +128,7 @@ def wrangle_metro_data():
     df['diff'] =  df['mmr'] - df['fmr']
     
     # creating the percent difference in terms of fmr
-    df['percent_diff'] =  (df['mmr'] - df['fmr']) / df['fmr']
+    df['percent_diff'] =  (df['mmr'] - df['fmr']) / df['fmr'] * 100
     
     # splitting 12 month(test), 24month(validate), 39 month(train)
     test = df[-12:]
@@ -378,7 +378,7 @@ def clean_zcta_gdf(filename = 'zcta_of_interest.shp'):
 
     return gdf
 
-def wrangle_gdf():
+def wrangle_gdf(date = '2023-05'):
     '''
     Arguments: None
     Actions:
@@ -398,7 +398,7 @@ def wrangle_gdf():
     cols = ['zip_code', 'affordability', 'num_properties']
     
     # get the dates of interest
-    df = df.loc['2023-05'][cols]
+    df = df.loc[date][cols]
     
     # merging data
     gdf = df.merge(gdf, how='inner', on='zip_code')
