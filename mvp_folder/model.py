@@ -16,10 +16,10 @@ from math import sqrt
 #models
 from statsmodels.tsa.api import Holt, ExponentialSmoothing
 # data
-from wrangle import wrangle_data
+from wrangle_final import wrangle_metro_data
 
 # get data
-df, train, validate, test = wrangle_data()
+df, train, validate, test = wrangle_metro_data()
 
 
 ### HELPER FUNCTIONS ###

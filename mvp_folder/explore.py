@@ -3,7 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings('ignore')
-from wrangle import wrangle_data
+from wrangle_final import wrangle_metro_data, wrangle_gdf
+
 
 # plotting defaults
 plt.rc('figure', figsize=(13, 7))
@@ -11,7 +12,7 @@ plt.style.use('seaborn-whitegrid')
 plt.rc('font', size=16)
 
 # getting data
-df, train, validate, test = wrangle_data()
+df, train, validate, test = wrangle_metro_data()
 
 # assigning target
 y = df['diff']
@@ -133,3 +134,14 @@ def get_avg_diff_6m():
     plt.show()
     
     return
+
+def get_affordability_map():
+    '''
+    This function merges the zip code tabulation area GeoDataFrame with the affordability data frame
+    '''
+    # get wrangled df
+    gdf = wrangle_gdf()
+    
+    # exit and return a map with the afforability as the focus
+    return gdf.explore('affordability', cmap='RdYlGn')
+    
