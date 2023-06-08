@@ -16,10 +16,10 @@ from math import sqrt
 #models
 from statsmodels.tsa.api import Holt, ExponentialSmoothing
 # data
-from wrangle import wrangle_data
+from wrangle_final import wrangle_metro_data
 
 # get data
-df, train, validate, test = wrangle_data()
+df, train, validate, test = wrangle_metro_data()
 
 
 ### HELPER FUNCTIONS ###
@@ -118,7 +118,7 @@ def get_baseline_table():
     eval_df = get_eval_df()
     
     # Create list of baseline tables with the model name as a pairt
-    models_and_type = [(get_baseline_simple_average(), 'simple_avg'), (get_baseline_rolling_average(1), '1_month_rolling_average'), (get_baseline_rolling_average(6), '6_month_rolling_avg')]
+    models_and_type = [(get_baseline_rolling_average(), '1_month_rolling_average')]
 
     # for each df and modeltype
     for model, model_type in models_and_type:
@@ -134,7 +134,7 @@ def get_baseline_table():
             eval_df = pd.concat([eval_df, new_eval_df])
     
     # exit and return eval df with all evaluations
-    return eval_df.reset_index().drop('index', axis=1)
+    return eval_df
 
 
 ### NON-BASELINE MODELS ###
@@ -221,7 +221,7 @@ def get_all_models():
     This function returns a df with all models present
     '''
     # return the functions with both baseline and non-baseline models in one table
-    return pd.concat([get_baseline_table()[get_baseline_table()['model_type'] == '1_month_rolling_average'], get_models()]).reset_index().drop('index', axis=1)
+    return pd.concat([get_baseline_table(), get_models()]).reset_index().drop('index', axis=1)
 
 
 

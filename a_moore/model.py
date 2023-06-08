@@ -118,7 +118,7 @@ def get_baseline_table():
     eval_df = get_eval_df()
     
     # Create list of baseline tables with the model name as a pairt
-    models_and_type = [(get_baseline_simple_average(), 'simple_avg'), (get_baseline_rolling_average(1), '1_month_rolling_average'), (get_baseline_rolling_average(6), '6_month_rolling_avg')]
+    models_and_type = [(get_baseline_rolling_average(), '1_month_rolling_average')]
 
     # for each df and modeltype
     for model, model_type in models_and_type:
@@ -134,7 +134,7 @@ def get_baseline_table():
             eval_df = pd.concat([eval_df, new_eval_df])
     
     # exit and return eval df with all evaluations
-    return eval_df.reset_index().drop('index', axis=1)
+    return eval_df.reset_index().drop('index', axis=1).groupby(['target_var', 'model_type'], sort=True).min()
 
 
 ### NON-BASELINE MODELS ###

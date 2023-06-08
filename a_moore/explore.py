@@ -3,7 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings('ignore')
-from wrangle import wrangle_data
+from wrangle_final import wrangle_metro_data, wrangle_gdf
+
 
 # plotting defaults
 plt.rc('figure', figsize=(13, 7))
@@ -11,7 +12,7 @@ plt.style.use('seaborn-whitegrid')
 plt.rc('font', size=16)
 
 # getting data
-df, train, test = wrangle_data()
+df, train, validate, test = wrangle_metro_data()
 
 # assigning target
 y = df['diff']
@@ -24,6 +25,7 @@ def get_disparity_graph():
     # plot the mmr and fmr lines
     df.mmr.plot(label='Median Market Rent')
     df.fmr.plot(label='Fair Market Rent (40%)')
+    plt.fill_between(df.index, df.mmr, df.fmr, color='red', alpha=0.1)
     
     # get a border on the legend
     plt.legend(frameon=True)
@@ -112,19 +114,18 @@ def get_avg_diff_6m():
     '''
     This function calls a bar chart representing the average difference per 6 month interval from 2017 to now
     '''
-    # get data
-    df, train, test = wrangle_data()
-    
-    # get target
-    y = df['diff']
     
     # resample to 6 month with the mean and create a bar plot
-    y.resample('6M').mean().plot.bar(width=.9, ec='black')
+    y_resample = y.resample('6M').mean()
+    y_resample.index = y_resample.index.strftime(date_format='%Y-%m')
     
+    y_resample.plot.bar(width=.9, ec='black')
+   
     # establish titles and axis lables
-    plt.title('Average Difference by 6 Month Period')
+    plt.title('Average Semi-Annual Difference')
     plt.xlabel('6-Month-Interval')
     plt.ylabel('Difference in Price')
+    plt.xticks(rotation = 55)
     
     # only get the grid lines to folloow the x axis
     plt.grid(axis='x')
@@ -133,3 +134,14 @@ def get_avg_diff_6m():
     plt.show()
     
     return
+
+def get_afforadability_map():
+    '''
+    This function merges the zip code tabulation area GeoDataFrame with the affordability data frame
+    '''
+    # get wrangled df
+    gdf = wrangle_gdf()
+    
+    # exit and return a map with the afforability as the focus
+    return gdf.explore('affordability', cmap='RdYlGn')
+    
