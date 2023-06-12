@@ -9,18 +9,18 @@ ________________________________________________________________________________
 ### Project Overview
 
 Every year, the Department of Housing and Urban Development releases a list of Fair Market Rents (FMRs) for over 2,600 markets across the United States. The FMR is produced for each combination of property location and number of bedrooms from 0-4. FMR is used as the baseline for various government programs that provide housing assistance to low-income families, such as the Housing Choice Voucher Program (2.7 million units)and the Project-Based Voucher Program (0.3 million units). As such, the accuracy of these values can't be overstated for the sake of the millions of Americans who depend on these programs. Our project's goal is to analyze the difference between HUD's FMR and 3rd party data for market averages to determine the reliability of FMR data in an actual market. If FMRs are too high, public housing agencies (PHAs) will be unable to maximize the number of families who receive assistance. If they're too low, it becomes more difficult for voucher users to acquire adequate housing.
+
+
 _____________________________________________________________________________________
 ###  How to Read Our Work
-
+1. Start with this readme document for an overview of the project and how to reproduce the work
+1. Check out our slide deck presentation here: https://www.canva.com/design/DAFlGI_3Ciw/SobAGAVg8JKFyQm2ETh0Sw/view?utm_content=DAFlGI_3Ciw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
+1. Look in the final_project folder of this repo and open the final_report.ipynb notebook to see the work through the data science pipeline step-by-step
+1. To further examine code used in final_report modules, check out the .py files in the final_project folder.
+1. Individual folders contain workbooks showing the unpolished groundwork and insights that lead to the final notebook.
 
 _____________________________________________________________________________________
-
-**Deliverables**
-
-- A complete README.md which walks through the details of this project
-- A final report folder which concisely displays the finished version of the project including exploration, findings, modeling, and all .py files needed to reproduce this project.
-- Individual folders containing workbooks showing the unpolished groundwork and insights that lead to the final notebook
-- Link to stakeholder presentation at [canva.com](link goes here)
+*** add project plan here ***
 
 #### Data Dictionary 
 
@@ -41,7 +41,7 @@ ________________________________________________________________________________
 
 _____________________________________________________________________
 
-#### Outline:
+#### Table of Contents:
 1. Initial Questions
 2. Acquire & Prepare Data
 3. Exploration/ Correlation Analysis
@@ -63,10 +63,21 @@ ________________________________________________________________________________
 #### Acquire Actions
 Steps Taken:
 1. HUD Data
-    a. National level FMR historical data was retrieved from https://www.huduser.gov/portal/datasets/FMR/FMR_All_1983_2023_rev.csv
-    b. The data for two-bedroom FMR for the San Antonio - New Braunfels (entity_id = 'METRO41700M41700') Metropolitan Statistical Area is then extracted using the prepare_hud_aggregate.py script in this repo.
+    
+    a. HUD Fair Market Rent (FMR) Acquisiton for Aggregated Metropolitan Statistical Area Data:
+
+    - The HUD FMR data was downloaded as a csv from https://www.huduser.gov/portal/datasets/fmr.html#history \.csv was acquired on 31 May 2023 
+    - After filtering to entity id, two-bedrooms, and years 2017-2023, there were 75 row and 4 columns.
+    - Each row (obervation) represents a month between January 2017 and March 2023.
+    - The features are the date index, Median Market Rate (MMR), Fair Market Rate (FMR), Difference between MMR and FMR in dollars (diff), and the percentage difference between MMR and FMR in terms of FMR (percent_diff)
+
+    b. HUD Fair Market Rent Acquisition for ZIP Code Tablulation Area (ZCTA) level data:
+    - Retrieved using the HUD API at https://www.huduser.gov/portal/dataset/fmr-api.html
+    - After filtering for only the the 39 months (April 2020-Jun 2023) for which we had monthly third-party market data, and then
+    
 2. Market Rent Data
-    The Market Rent data was acquired from Bigger Pockets, a media company and social network focused on commercial and residential real estate investing. This particular dataset was created by Kaylin Cooper, an investor who has been tracking market trends in the top 100 cities in the U.S. since 2017.
+
+    a. The Market Rent data was acquired from Bigger Pockets, a media company and social network focused on commercial and residential real estate investing. This particular dataset was created by Kaylin Cooper, an investor who has been tracking market trends in the top 100 cities in the U.S. since 2017.
 - Size at Acquisition: 300 rows x 77 columns 
 - Source: https://www.biggerpockets.com/files/user/leahd42/file/webinar-bonus-2022-rental-data
 
