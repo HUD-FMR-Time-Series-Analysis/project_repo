@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
-from wrangle_final import wrangle_metro_data, wrangle_gdf
+from wrangle_final import wrangle_metro_data, wrangle_gdf, wrangle_zipcode_data
 
 
 # plotting defaults
@@ -145,3 +146,39 @@ def get_affordability_map(date):
     # exit and return a map with the afforability as the focus
     return gdf.explore('affordability', cmap='RdYlGn')
     
+# make a function
+def get_min_max_comparison():
+    '''
+    Arguments: None
+    Actions: This function loads data for the days with the minimum and maximum difference and creats a countplot to compare them side by side
+    '''
+    # get data
+    df = wrangle_zipcode_data()
+    min_max = df.loc[['2022-08', '2020-11']]
+
+    # set pallete
+    sns.set_palette("Set1")
+
+    # assign hue order
+    hue_order = ['2022-08-01', '2020-11-01']
+
+    # create a count plot with affordability
+    sns.countplot(data = min_max.reset_index(), x='affordability', hue='date', hue_order=hue_order, ec = 'black', alpha=.8)
+
+    # labels and titles
+    plt.ylabel('Number of Zip Codes')
+    plt.xlabel('Affordability Rating')
+    plt.suptitle('Zip Code Affordability Rating Distribution')
+    plt.title('Minimum & Maximum Difference Comparison')
+
+    # set ticks
+    plt.yticks([0, 10, 20, 30, 40, 50])
+    plt.xticks([0, 1, 2, 3])
+
+    # create a legend with a border
+    plt.legend(labels=['Max Difference', 'Min Difference'], frameon=True)
+
+    # put it all together and shjow
+    plt.show()
+    
+    return
