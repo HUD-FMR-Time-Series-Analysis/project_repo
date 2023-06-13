@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+import geopandas
 import warnings
 warnings.filterwarnings('ignore')
-from wrangle_final import wrangle_metro_data, wrangle_gdf
-
+from wrangle_final import clean_zcta_gdf, wrangle_zipcode_data, wrangle_metro_data, wrangle_gdf
 
 # plotting defaults
 plt.rc('figure', figsize=(13, 7))
@@ -13,6 +14,9 @@ plt.rc('font', size=16)
 
 # getting data
 df, train, validate, test = wrangle_metro_data()
+zip_code = wrangle_zipcode_data()
+gdf = clean_zcta_gdf()
+
 
 # assigning target
 y = df['diff']
@@ -144,4 +148,53 @@ def get_afforadability_map():
     
     # exit and return a map with the afforability as the focus
     return gdf.explore('affordability', cmap='RdYlGn')
+
+def get_interactive_map():
+    '''
+    This funciton displays an interactive map showing the changes in affordability fromwhen the dioffreefnce between FMR and MMR were at their lowest and highest for the dates that the zipcode tab data is avaialble.
+    Module:
+        from matplotlib.colors import ListedColormap
+    '''
+    # get needed date to matchg the zipcode data
+    df = df.loc['2020':]
+
+    # get the minimum and maximum differecne date
+    max_diff_date = df['diff'].idxmax().strftime('%Y-%m')
+    min_diff_date = df['diff'].idxmin().strftime('%Y-%m')
+
+    # getting max differnce data
+    max_difference = zip_code.loc[max_diff_date]
+
+    # getting minimum difference data
+    min_difference = zip_code.loc[min_diff_date]
+
+    # getting affordability df with the minuimum and maximum
+    min_max_afford = min_difference[['zip_code', 'affordability']]\
+                    .rename({'affordability':'min_affordability'}, axis=1)\
+                    .merge(max_difference[['zip_code', 'affordability']]\
+                    .rename({'affordability': 'max_affordability'}, axis=1))
+
+    # create difference columns
+    min_max_afford['difference'] = min_max_afford['min_affordability'] - min_max_afford['max_affordability']
+
+    # establish affordability based on the shifts
+    min_max_afford['Affordability'] = np.where(min_max_afford['difference'] == 0, 'No Change', np.where(min_max_afford['difference'] > 0, 'Less Affordable', 'More Affordable'))
+
+    # columns of interest
+    cols = ['zip_code', 'Affordability']
+
+    # merging data
+    gdf = min_max_afford[cols].merge(gdf, how='inner', on='zip_code')
+
+    # setting index to zipcode
+    gdf = gdf.set_index('zip_code')
+
+    # set to gdf
+    gdf = geopandas.GeoDataFrame(gdf)
+
+    # get cmap colors
+    cmap = ListedColormap(['red', 'green', 'lightgray'])
+
+    # get interactive map
+    return gdf.explore('Affordability', cmap=cmap)
     

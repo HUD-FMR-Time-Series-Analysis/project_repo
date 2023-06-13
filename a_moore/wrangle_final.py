@@ -320,8 +320,55 @@ def clean_rapid_zipcode_data(filename = 'rapid_zipcode_data.csv'):
     
     # rename columns
     df = df.rename(columns = dict(zip(df.columns, new_cols)))
-    
+   
     # exit function and return newly created df
+    return df
+
+# helper function
+def remove_outliers(df, k=3):
+    '''
+    Actions: removies outliers using the IQR with a default k of 1.5
+    '''
+    # initialize dictionary
+    col_qs = {}
+    
+    # assign column names to variable
+    df_cols = df.columns
+    
+    # creates a list of column names
+    df_cols = df_cols.to_list()
+    
+    # cat cols
+    cat_cols = ['num_properties', 'zip_code', 'afford_min', 'afford_avg',
+       'afford_max', 'affordability']
+    
+    # remove cat cols
+    for col in cat_cols:
+        df_cols.remove(col)
+    
+
+    # for each column
+    for col in df_cols:
+        
+        # create qualtiles and put them in a dict
+        col_qs[col] = q1, q3 = df[col].quantile([0.25, 0.75])
+
+    # for each col
+    for col in df_cols:    
+        
+        # calculate the iqr
+        iqr = col_qs[col][0.75] - col_qs[col][0.25]
+        
+        # calculate the lower fence
+        lower_fence = col_qs[col][0.25] - (iqr*k)
+        
+        # calculates the upper fence
+        upper_fence = col_qs[col][0.75] + (iqr*k)
+        
+        # remove outliers from df for each col
+        df = df[(df[col] > lower_fence) & (df[col] < upper_fence)]
+        
+    # exit df and return new df
     return df
 
 def wrangle_zipcode_data():
@@ -356,6 +403,9 @@ def wrangle_zipcode_data():
     # getting an affordability score using all the true and falses
     df['affordability'] = df[['afford_min', 'afford_max', 'afford_avg']].sum(axis=1)
 
+    # remove outliers
+    df = remove_outliers(df)
+    
     # exit function and return wrangled df
     return df
 
