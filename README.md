@@ -20,7 +20,15 @@ ________________________________________________________________________________
 1. Individual folders contain workbooks showing the unpolished groundwork and insights that lead to the final notebook.
 
 _____________________________________________________________________________________
-*** add project plan here ***
+### Project Plan
+1. Planning 25-28 May 2023
+2. Acquire Data 29-30 May 2023
+3. Exploration and Modeling Phase 31 May - 03 Jun 2023
+4. MVP Notebook and Slide Deck 5 Jun
+5. Add feature scope 6-7 Jun
+6. Presentation prep 8 Jun
+6. First presentation 9 Jun
+8. Presentation refinement 10-15 Jun
 
 #### Data Dictionary 
 
