@@ -20,7 +20,15 @@ ________________________________________________________________________________
 1. Individual folders contain workbooks showing the unpolished groundwork and insights that lead to the final notebook.
 
 _____________________________________________________________________________________
-*** add project plan here ***
+### Project Plan
+1. Planning 25-28 May 2023
+2. Acquire Data 29-30 May 2023
+3. Exploration and Modeling Phase 31 May - 03 Jun 2023
+4. MVP Notebook and Slide Deck 5 Jun
+5. Add feature scope 6-7 Jun
+6. Presentation prep 8 Jun
+6. First presentation 9 Jun
+8. Presentation refinement 10-15 Jun
 
 #### Data Dictionary 
 
@@ -37,6 +45,10 @@ ________________________________________________________________________________
 | :---------| :------------------------ |
 | CBSA | Core Based Statistical Area (CBSA) is an Office of Management and Budget(OMB) defined area containing a large population nucleus, or urban area, and adjacent communities that have a high degree of integration with that nucleus. There are two types of CBSAs: Metropolitan statistical areas (MSAs) and micropolitan statistical areas (µSAs). 
 | Entity ID | An entity id is a code the federal government uses to uniquely identify Metropolitan Statistical Areas. In the case of the San Antonio - New Braunfel MSA, the entity id is 'METRO41700M41700'
+| Fair Market Rent (FMR) | FMRs are rates established by HUD that are supposed to reflect the 40 percentile of gross rent prices in a given gegraphic area. These are established for large areas such as MSAs and rural counties as well as for individual ZIP Codes where they are referred to as Small Area FMRs or SAFMRs. 
+| Gross Rent | The gross rent represents the entire housing cost. It is calculated by adding the rent to the owner and the utility allowance for the unit. If all the utilities are included in the rent, the rent to the owner and the gross rent will be the same. exclude telephone and internet service
+| Housing Choice Voucher (HCV) | HCVs are income-based subsidies that are HUDs primary tool to help provide housing for low-income Americans. They are paid directly to landlords wherever voucher-holders can qualify for a lease. HCVs are capped at the FMR for and supplement a co-payment made by the voucher-holder that is based on 30% of their income.
+| HUD | The U.S. Department of Housing and Urban Development (HUD) was  created in 1965 as part of President Lyndon Johnson's War on Poverty. It is a cabinet-level Department that administers federal housing and urban development laws.
 | MSA | Metropolitan Statistical Area. This is a federally defined area that is used by the government to aggregate statistics for metropolitan areas. Each MSA is identified by an entity id code.
 
 _____________________________________________________________________
