@@ -8,7 +8,6 @@ from datetime import datetime
 import os
 import geopandas
 
-from env import hud_token
 ### Wrangle Dataset 1 ###
 
 # HUD FMR for SA/NB, TX Metro Area
@@ -252,7 +251,7 @@ def clean_hud_zipcode_data():
     df.index.name = 'date'
     
     # set index to datetime and str ro remove the ending
-    df.index = pd.to_datetime(df.index.astype(str)).strftime('%Y-%m')
+    df.index = pd.to_datetime(df.index, format = '%Y-%m').strftime('%Y-%m')
     
     # reset to date time to have dates that start at the beginning of the month
     df.index = pd.to_datetime(df.index)
