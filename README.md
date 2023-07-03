@@ -1,4 +1,4 @@
-# The Fairness of Fair Market Rent
+# The Fairness of Fair Market Rent 
 ## Time Series Analysis of HUD's Fair Market Rent (FMR) Rates
 Corey Baughman, Mack McGlenn, Aaron Moore, Adriana Nuncio
 
