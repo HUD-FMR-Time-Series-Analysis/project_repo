@@ -90,12 +90,44 @@ def get_entity_data(entity_id):
     for zip_code in zip_codes:
         df_zip = df[df.zip_code == zip_code]
         future = pd.DataFrame({'year':[str(int(datetime.now().year)+1)], 'zip_code':[zip_code]})
-        df_zip = df_zip.append(future, ignore_index = True)
+        df_zip = pd.concat([df_zip, future], ignore_index=True)
         df_zip = resample_hud_data(df_zip)
         df_monthly = pd.concat([df_monthly, df_zip])
-        
+    
+    # convert index to datetime format
+    df_monthly.index = pd.to_datetime(df_monthly.index)   
 
     return df_monthly
+
+
+def get_yearly_entity_data(entity_id):
+    '''
+    This function takes in a single HUD entity (in this case Metropolitan Statistical Area)
+    and requests the Fair Market Rent Small Area Data for that entity for the current year. This current year response is converted to a .json and then a DataFrame and then
+    each prior is queried and and concatenated to the original df. Requires a HUD API User Token
+    which can be acquired here: https://www.huduser.gov/portal/dataset/fmr-api.html
+    Entity_ids can be found here: https://www.huduser.gov/portal/datasets/geotools.html
+    
+    Arguments: a HUD entity id
+    
+    Returns: a DataFrame of Fair Market Rent rates for each ZIP code in entity
+    '''
+    header = {'Authorization': f'Bearer {hud_token}'}
+
+    years = get_year_list()
+    df = pd.DataFrame()
+
+    for year in years:
+        url = f'https://www.huduser.gov/hudapi/public/fmr/data/{entity_id}?year={year}'
+        response = requests.get(url, headers=header)
+        data = response.json()
+        dum = pd.DataFrame(data['data']['basicdata'])
+        dum['year'] = data['data']['year']
+        dum['entity_id'] = entity_id
+        dum['area_name'] = data['data']['area_name']
+        df = pd.concat([df, dum])
+        
+    return df
 
 
 # a parent function to get entity_ids for a list of hud entity_ids.
